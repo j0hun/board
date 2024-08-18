@@ -8,12 +8,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
+    @Transactional(readOnly = true)
+    public List<BoardResponseDTO> findBoards() {
+        log.info("findBoards() 메서드 호출");
+
+        List<Board> boardList = boardRepository.findAll();
+
+        List<BoardResponseDTO> boardResponseDTOList = new ArrayList<>();
+        for (Board board : boardList) {
+            BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(board);
+            boardResponseDTOList.add(boardResponseDTO);
+        }
+
+        return boardResponseDTOList;
+    }
+
 
     @Transactional(readOnly = true)
     public BoardResponseDTO findBoardById(Long boardId) {

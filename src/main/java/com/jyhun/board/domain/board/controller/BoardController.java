@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
@@ -19,16 +21,24 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    @GetMapping
+    public ResponseEntity<List<BoardResponseDTO>> getBoards() {
+        log.info("모든 게시판 목록 조회 요청");
+
+        List<BoardResponseDTO> boardList = boardService.findBoards();
+        return new ResponseEntity<>(boardList, HttpStatus.OK);
+    }
+
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardResponseDTO> getBoardById(@PathVariable Long boardId) {
-        log.info("getBoardById 메서드 호출, boardId: {}", boardId);
+        log.info("ID {}의 게시판 조회 요청", boardId);
 
         try {
             BoardResponseDTO board = boardService.findBoardById(boardId);
-            log.info("ID가 {}인 게시판을 성공적으로 조회했습니다.", boardId);
+            log.info("ID {}의 게시판 조회 성공", boardId);
             return new ResponseEntity<>(board, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("ID가 {}인 게시판을 조회하는 중 오류 발생: {}", boardId, e.getMessage(), e);
+            log.error("ID {}의 게시판 조회 실패: {}", boardId, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
