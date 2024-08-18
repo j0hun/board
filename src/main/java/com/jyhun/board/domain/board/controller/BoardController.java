@@ -1,15 +1,13 @@
 package com.jyhun.board.domain.board.controller;
 
+import com.jyhun.board.domain.board.dto.BoardRequestDTO;
 import com.jyhun.board.domain.board.dto.BoardResponseDTO;
 import com.jyhun.board.domain.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,6 +39,13 @@ public class BoardController {
             log.error("ID {}의 게시판 조회 실패: {}", boardId, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<BoardResponseDTO> postBoard(@RequestBody BoardRequestDTO boardRequestDTO){
+        log.info("게시판 데이터 {} 생성 요청", boardRequestDTO);
+        BoardResponseDTO boardResponseDTO = boardService.addBoard(boardRequestDTO);
+        return new ResponseEntity<>(boardResponseDTO, HttpStatus.CREATED);
     }
 
 }
