@@ -77,4 +77,17 @@ public class BoardService {
         return BoardResponseDTO.toDTO(board);
     }
 
+    @Transactional
+    public void deleteBoard(Long boardId){
+        log.info("deleteBoard 메서드 호출");
+
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> {
+                    log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
+                    return new RuntimeException("게시판을 찾을 수 없습니다.");
+                });
+        boardRepository.delete(board);
+        log.info("게시판 삭제 완료, 게시판 ID: {}", boardId);
+    }
+
 }

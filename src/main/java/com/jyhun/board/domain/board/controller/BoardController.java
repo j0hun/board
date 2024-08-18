@@ -56,4 +56,11 @@ public class BoardController {
         return new ResponseEntity<>(boardResponseDTO,HttpStatus.OK);
     }
 
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId){
+        log.info("게시판 삭제 요청, 게시판 ID:{}", boardId);
+        boardService.deleteBoard(boardId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
