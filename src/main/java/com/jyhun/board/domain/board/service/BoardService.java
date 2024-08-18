@@ -62,4 +62,19 @@ public class BoardService {
         return BoardResponseDTO.toDTO(savedBoard);
     }
 
+    @Transactional
+    public BoardResponseDTO modifyBoard(BoardRequestDTO boardRequestDTO, Long boardId) {
+        log.info("modifyBoard 메서드 호출");
+
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> {
+                    log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
+                    return new RuntimeException("게시판을 찾을 수 없습니다.");
+                });
+        Board updatedBoard = boardRequestDTO.toEntity();
+        board.updateBoard(updatedBoard);
+        log.info("게시판 수정 완료, 게시판 ID: {}", boardId);
+        return BoardResponseDTO.toDTO(board);
+    }
+
 }

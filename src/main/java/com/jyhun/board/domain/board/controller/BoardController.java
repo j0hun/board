@@ -43,9 +43,17 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<BoardResponseDTO> postBoard(@RequestBody BoardRequestDTO boardRequestDTO){
-        log.info("게시판 데이터 {} 생성 요청", boardRequestDTO);
+        log.info("게시판 생성 요청, 생성 데이터: {}", boardRequestDTO);
         BoardResponseDTO boardResponseDTO = boardService.addBoard(boardRequestDTO);
         return new ResponseEntity<>(boardResponseDTO, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<BoardResponseDTO> patchBoard(@RequestBody BoardRequestDTO boardRequestDTO,
+                                                       @PathVariable Long boardId) {
+        log.info("게시판 수정 요청, 게시판 ID:{}, 수정 데이터: {}", boardId, boardRequestDTO);
+        BoardResponseDTO boardResponseDTO = boardService.modifyBoard(boardRequestDTO, boardId);
+        return new ResponseEntity<>(boardResponseDTO,HttpStatus.OK);
     }
 
 }

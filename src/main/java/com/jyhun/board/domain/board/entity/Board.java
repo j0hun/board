@@ -28,4 +28,10 @@ public class Board {
         this.description = description;
     }
 
+    // 게시판 수정
+    public void updateBoard(Board board){
+        this.name = board.getName();
+        this.description = board.getDescription();
+    }
+
 }
