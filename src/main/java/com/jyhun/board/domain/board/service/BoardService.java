@@ -4,6 +4,8 @@ import com.jyhun.board.domain.board.dto.BoardRequestDTO;
 import com.jyhun.board.domain.board.dto.BoardResponseDTO;
 import com.jyhun.board.domain.board.entity.Board;
 import com.jyhun.board.domain.board.repository.BoardRepository;
+import com.jyhun.board.global.exception.CustomException;
+import com.jyhun.board.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> {
                     log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
-                    return new RuntimeException("게시판을 찾을 수 없습니다.");
+                    return new CustomException(ErrorCode.BOARD_NOT_FOUND);
                 });
 
         BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(board);
@@ -69,7 +71,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> {
                     log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
-                    return new RuntimeException("게시판을 찾을 수 없습니다.");
+                    return new CustomException(ErrorCode.BOARD_NOT_FOUND);
                 });
         Board updatedBoard = boardRequestDTO.toEntity();
         board.updateBoard(updatedBoard);
@@ -84,7 +86,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> {
                     log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
-                    return new RuntimeException("게시판을 찾을 수 없습니다.");
+                    return new CustomException(ErrorCode.BOARD_NOT_FOUND);
                 });
         boardRepository.delete(board);
         log.info("게시판 삭제 완료, 게시판 ID: {}", boardId);

@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
 
+/*
+CustomError를 담을 ResponseEntity:
+ */
 @Data
 @Builder
 public class ErrorResponseEntity {
