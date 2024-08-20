@@ -31,7 +31,7 @@ public class PostController {
     public ResponseEntity<PostResponseDTO> postPost(@RequestBody PostRequestDTO postRequestDTO) {
         log.info("게시글 생성 요청, 생성 데이터: {}", postRequestDTO);
         PostResponseDTO postResponseDTO = postService.addPost(postRequestDTO);
-        return new ResponseEntity<>(postResponseDTO,HttpStatus.CREATED);
+        return new ResponseEntity<>(postResponseDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{postId}")
@@ -39,7 +39,7 @@ public class PostController {
                                                      @PathVariable Long postId) {
         log.info("게시글 수정 요청, 요청 데이터: {}", postRequestDTO);
         PostResponseDTO postResponseDTO = postService.modifyPost(postRequestDTO, postId);
-        return new ResponseEntity<>(postResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(postResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{postId}")
@@ -47,6 +47,14 @@ public class PostController {
         log.info("게시글 삭제 요청, 게시글 ID:{}", postId);
         postService.deletePost(postId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<Void> postIncreaseLikeCount(@PathVariable Long postId) {
+        log.info("ID {}의 게시글 좋아요수 증가 요청", postId);
+        postService.increaseLikeCount(postId);
+        log.info("ID {}의 게시글 좋아요수 증가 성공", postId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

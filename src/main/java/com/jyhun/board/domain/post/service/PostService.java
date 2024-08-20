@@ -88,4 +88,17 @@ public class PostService {
         log.info("조회수 증가 성공, 게시글 ID: {}", postId);
     }
 
+    @Transactional
+    public void increaseLikeCount(Long postId) {
+        log.info("increaseLikeCount 메서드 호출");
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> {
+                    log.error("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
+                    return new CustomException(ErrorCode.POST_NOT_FOUND);
+                });
+        post.increaseLikeCount();
+        log.info("좋아요수 증가 성공, 게시글 ID: {}", postId);
+    }
+
 }

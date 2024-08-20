@@ -47,4 +47,9 @@ public class Post {
         this.viewCount += 1;
     }
 
+    // 좋아요수 증가
+    public void increaseLikeCount() {
+        this.likeCount += 1;
+    }
+
 }
