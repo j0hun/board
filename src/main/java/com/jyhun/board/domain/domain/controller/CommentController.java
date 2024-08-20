@@ -42,4 +42,11 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDTO,HttpStatus.OK);
     }
 
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        log.info("댓글 삭제 요청, 댓글 ID:{}", commentId);
+        commentService.deleteComment(commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

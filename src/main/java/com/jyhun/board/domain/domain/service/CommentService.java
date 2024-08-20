@@ -61,4 +61,17 @@ public class CommentService {
         return CommentResponseDTO.toDTO(comment);
     }
 
+    @Transactional
+    public void deleteComment(Long commentId) {
+        log.info("deleteComment 메서드 호출");
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> {
+                    log.error("ID가 {}인 댓글을 찾을 수 없습니다.", commentId);
+                    return new CustomException(ErrorCode.COMMENT_NOT_FOUND);
+                });
+        commentRepository.delete(comment);
+        log.info("댓글 삭제 완료, 댓글 ID: {}", commentId);
+    }
+
 }
