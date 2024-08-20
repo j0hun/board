@@ -26,4 +26,9 @@ public class Comment {
     public Comment(String content) {
         this.content = content;
     }
+
+    // 댓글 수정
+    public void updateComment(Comment comment) {
+        this.content = comment.getContent();
+    }
 }
