@@ -75,4 +75,17 @@ public class PostService {
         log.info("게시글 삭제 완료, 게시글 ID: {}", postId);
     }
 
+    @Transactional
+    public void increaseViewCount(Long postId) {
+        log.info("increaseViewCount 메서드 호출");
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> {
+                    log.error("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
+                    return new CustomException(ErrorCode.POST_NOT_FOUND);
+                });
+        post.increaseViewCount();
+        log.info("조회수 증가 성공, 게시글 ID: {}", postId);
+    }
+
 }

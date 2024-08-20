@@ -22,6 +22,8 @@ public class PostController {
         log.info("ID {}의 게시글 조회 요청", postId);
         PostResponseDTO post = postService.findPostById(postId);
         log.info("ID {}의 게시글 조회 성공", postId);
+        postService.increaseViewCount(postId);
+        log.info("ID {}의 조회수 증가 성공", postId);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 

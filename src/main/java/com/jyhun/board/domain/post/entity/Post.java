@@ -42,4 +42,9 @@ public class Post {
         this.content = post.getContent();
     }
 
+    // 조회수 증가
+    public void increaseViewCount() {
+        this.viewCount += 1;
+    }
+
 }
