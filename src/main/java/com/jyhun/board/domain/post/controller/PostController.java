@@ -2,9 +2,13 @@ package com.jyhun.board.domain.post.controller;
 
 import com.jyhun.board.domain.post.dto.PostRequestDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
+import com.jyhun.board.domain.post.dto.PostSearchDTO;
 import com.jyhun.board.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,16 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+
+    @GetMapping
+    public ResponseEntity<Page<PostResponseDTO>> getPosts(@RequestParam(required = false) String searchKey,
+                                                          @RequestParam(required = false) String searchValue,
+                                                          @PageableDefault Pageable pageable) {
+        PostSearchDTO postSearchDTO = new PostSearchDTO(searchKey, searchValue);
+        log.info("게시글 목록 페이징 조회, 검색 조건: {}, 페이지: {}", postSearchDTO, pageable);
+        Page<PostResponseDTO> posts = postService.findPosts(postSearchDTO, pageable);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDTO> getPostById(@PathVariable Long postId) {
