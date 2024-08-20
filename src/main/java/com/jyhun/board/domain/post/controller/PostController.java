@@ -40,4 +40,11 @@ public class PostController {
         return new ResponseEntity<>(postResponseDTO,HttpStatus.OK);
     }
 
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        log.info("게시글 삭제 요청, 게시글 ID:{}", postId);
+        postService.deletePost(postId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

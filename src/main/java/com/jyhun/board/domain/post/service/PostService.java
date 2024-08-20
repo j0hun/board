@@ -61,4 +61,18 @@ public class PostService {
         return PostResponseDTO.toDTO(post);
     }
 
+    @Transactional
+    public void deletePost(Long postId) {
+        log.info("deletePost 메서드 호출");
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> {
+                    log.error("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
+                    return new CustomException(ErrorCode.POST_NOT_FOUND);
+                });
+
+        postRepository.delete(post);
+        log.info("게시글 삭제 완료, 게시글 ID: {}", postId);
+    }
+
 }
