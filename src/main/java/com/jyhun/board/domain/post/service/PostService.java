@@ -24,7 +24,7 @@ public class PostService {
 
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> {
-                    log.info("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
+                    log.error("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
                     return new CustomException(ErrorCode.POST_NOT_FOUND);
                 });
 
@@ -43,6 +43,22 @@ public class PostService {
 
         log.info("게시글 추가 완료, 게시글 ID: {}", savedPost.getId());
         return PostResponseDTO.toDTO(savedPost);
+    }
+
+    @Transactional
+    public PostResponseDTO modifyPost(PostRequestDTO postRequestDTO, Long postId) {
+        log.info("modifyPost 메서드 호출");
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> {
+                    log.error("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
+                    return new CustomException(ErrorCode.POST_NOT_FOUND);
+                });
+
+        Post updatedPost = postRequestDTO.toEntity();
+        post.updatePost(updatedPost);
+        log.info("게시글 수정 완료, 게시글 ID: {}", postId);
+        return PostResponseDTO.toDTO(post);
     }
 
 }

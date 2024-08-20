@@ -32,4 +32,12 @@ public class PostController {
         return new ResponseEntity<>(postResponseDTO,HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostResponseDTO> patchPost(@RequestBody PostRequestDTO postRequestDTO,
+                                                     @PathVariable Long postId) {
+        log.info("게시글 수정 요청, 요청 데이터: {}", postRequestDTO);
+        PostResponseDTO postResponseDTO = postService.modifyPost(postRequestDTO, postId);
+        return new ResponseEntity<>(postResponseDTO,HttpStatus.OK);
+    }
+
 }

@@ -36,4 +36,10 @@ public class Post {
         this.likeCount = likeCount;
     }
 
+    // 게시글 수정
+    public void updatePost(Post post){
+        this.title = post.getTitle();
+        this.content = post.getContent();
+    }
+
 }
