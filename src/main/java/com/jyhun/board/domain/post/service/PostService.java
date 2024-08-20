@@ -1,5 +1,6 @@
 package com.jyhun.board.domain.post.service;
 
+import com.jyhun.board.domain.post.dto.PostRequestDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
 import com.jyhun.board.domain.post.entity.Post;
 import com.jyhun.board.domain.post.repository.PostRepository;
@@ -20,14 +21,28 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDTO findPostById(Long postId) {
         log.info("findPostById 메서드 호출, postId: {}", postId);
+
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> {
                     log.info("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
                     return new CustomException(ErrorCode.POST_NOT_FOUND);
                 });
+
         PostResponseDTO postResponseDTO = PostResponseDTO.toDTO(post);
         log.info("ID가 {}인 게시글을 성공적으로 조회했습니다.", postId);
+
         return postResponseDTO;
+    }
+
+    @Transactional
+    public PostResponseDTO addPost(PostRequestDTO postRequestDTO) {
+        log.info("addPost 메서드 호출");
+
+        Post post = postRequestDTO.toEntity();
+        Post savedPost = postRepository.save(post);
+
+        log.info("게시글 추가 완료, 게시글 ID: {}", savedPost.getId());
+        return PostResponseDTO.toDTO(savedPost);
     }
 
 }

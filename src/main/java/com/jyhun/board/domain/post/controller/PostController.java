@@ -1,15 +1,13 @@
 package com.jyhun.board.domain.post.controller;
 
+import com.jyhun.board.domain.post.dto.PostRequestDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
 import com.jyhun.board.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -25,6 +23,13 @@ public class PostController {
         PostResponseDTO post = postService.findPostById(postId);
         log.info("ID {}의 게시글 조회 성공", postId);
         return new ResponseEntity<>(post, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<PostResponseDTO> postPost(@RequestBody PostRequestDTO postRequestDTO) {
+        log.info("게시글 생성 요청, 생성 데이터: {}", postRequestDTO);
+        PostResponseDTO postResponseDTO = postService.addPost(postRequestDTO);
+        return new ResponseEntity<>(postResponseDTO,HttpStatus.CREATED);
     }
 
 }
