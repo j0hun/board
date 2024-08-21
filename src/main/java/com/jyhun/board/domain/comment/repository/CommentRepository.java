@@ -1,6 +1,6 @@
-package com.jyhun.board.domain.domain.repository;
+package com.jyhun.board.domain.comment.repository;
 
-import com.jyhun.board.domain.domain.entity.Comment;
+import com.jyhun.board.domain.comment.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

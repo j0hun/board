@@ -1,4 +1,4 @@
-package com.jyhun.board.domain.domain.entity;
+package com.jyhun.board.domain.comment.entity;
 
 import com.jyhun.board.domain.post.entity.Post;
 import jakarta.persistence.*;

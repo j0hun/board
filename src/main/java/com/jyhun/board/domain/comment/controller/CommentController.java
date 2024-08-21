@@ -1,8 +1,8 @@
-package com.jyhun.board.domain.domain.controller;
+package com.jyhun.board.domain.comment.controller;
 
-import com.jyhun.board.domain.domain.dto.CommentRequestDTO;
-import com.jyhun.board.domain.domain.dto.CommentResponseDTO;
-import com.jyhun.board.domain.domain.service.CommentService;
+import com.jyhun.board.domain.comment.dto.CommentRequestDTO;
+import com.jyhun.board.domain.comment.dto.CommentResponseDTO;
+import com.jyhun.board.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

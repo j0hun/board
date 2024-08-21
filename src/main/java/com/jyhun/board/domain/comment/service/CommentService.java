@@ -1,9 +1,9 @@
-package com.jyhun.board.domain.domain.service;
+package com.jyhun.board.domain.comment.service;
 
-import com.jyhun.board.domain.domain.dto.CommentRequestDTO;
-import com.jyhun.board.domain.domain.dto.CommentResponseDTO;
-import com.jyhun.board.domain.domain.entity.Comment;
-import com.jyhun.board.domain.domain.repository.CommentRepository;
+import com.jyhun.board.domain.comment.dto.CommentRequestDTO;
+import com.jyhun.board.domain.comment.dto.CommentResponseDTO;
+import com.jyhun.board.domain.comment.entity.Comment;
+import com.jyhun.board.domain.comment.repository.CommentRepository;
 import com.jyhun.board.domain.post.entity.Post;
 import com.jyhun.board.domain.post.repository.PostRepository;
 import com.jyhun.board.global.exception.CustomException;

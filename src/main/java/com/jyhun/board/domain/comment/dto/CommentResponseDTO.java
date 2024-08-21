@@ -1,6 +1,6 @@
-package com.jyhun.board.domain.domain.dto;
+package com.jyhun.board.domain.comment.dto;
 
-import com.jyhun.board.domain.domain.entity.Comment;
+import com.jyhun.board.domain.comment.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

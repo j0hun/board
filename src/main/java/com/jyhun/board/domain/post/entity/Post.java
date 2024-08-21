@@ -1,13 +1,14 @@
 package com.jyhun.board.domain.post.entity;
 
 import com.jyhun.board.domain.board.entity.Board;
-import com.jyhun.board.domain.domain.entity.Comment;
+import com.jyhun.board.domain.comment.entity.Comment;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,7 @@ public class Post {
     private Board board;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Post(String title, String content, Long viewCount, Long likeCount) {

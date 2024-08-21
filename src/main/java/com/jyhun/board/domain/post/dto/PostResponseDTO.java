@@ -1,7 +1,7 @@
 package com.jyhun.board.domain.post.dto;
 
-import com.jyhun.board.domain.domain.dto.CommentResponseDTO;
-import com.jyhun.board.domain.domain.entity.Comment;
+import com.jyhun.board.domain.comment.dto.CommentResponseDTO;
+import com.jyhun.board.domain.comment.entity.Comment;
 import com.jyhun.board.domain.post.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,13 +25,10 @@ public class PostResponseDTO {
 
     public static PostResponseDTO toDTO(Post post) {
         List<Comment> commentList = post.getCommentList();
-        List<CommentResponseDTO> commentResponseDTOList = null;
-        if (commentList != null) {
-            commentResponseDTOList = new ArrayList<>();
-            for (Comment comment : commentList) {
-                CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
-                commentResponseDTOList.add(commentResponseDTO);
-            }
+        List<CommentResponseDTO> commentResponseDTOList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
+            commentResponseDTOList.add(commentResponseDTO);
         }
         PostResponseDTO postResponseDTO = new PostResponseDTO(
                 post.getId(),
