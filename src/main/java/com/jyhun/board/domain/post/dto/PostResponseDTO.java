@@ -1,9 +1,14 @@
 package com.jyhun.board.domain.post.dto;
 
+import com.jyhun.board.domain.domain.dto.CommentResponseDTO;
+import com.jyhun.board.domain.domain.entity.Comment;
 import com.jyhun.board.domain.post.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,15 +21,23 @@ public class PostResponseDTO {
     private Long viewCount;
     private Long likeCount;
     private Long boardId;
+    private List<CommentResponseDTO> commentResponseDTOList;
 
     public static PostResponseDTO toDTO(Post post) {
+        List<Comment> commentList = post.getCommentList();
+        List<CommentResponseDTO> commentResponseDTOList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
+            commentResponseDTOList.add(commentResponseDTO);
+        }
         PostResponseDTO postResponseDTO = new PostResponseDTO(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getViewCount(),
                 post.getLikeCount(),
-                post.getBoard().getId()
+                post.getBoard().getId(),
+                commentResponseDTOList
         );
         return postResponseDTO;
     }

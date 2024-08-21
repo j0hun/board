@@ -31,4 +31,11 @@ public class Comment {
     public void updateComment(Comment comment) {
         this.content = comment.getContent();
     }
+
+    public void setPost(Post post) {
+        this.post = post;
+        if(post != null){
+            post.getCommentList().add(this);
+        }
+    }
 }

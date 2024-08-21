@@ -4,6 +4,8 @@ import com.jyhun.board.domain.domain.dto.CommentRequestDTO;
 import com.jyhun.board.domain.domain.dto.CommentResponseDTO;
 import com.jyhun.board.domain.domain.entity.Comment;
 import com.jyhun.board.domain.domain.repository.CommentRepository;
+import com.jyhun.board.domain.post.entity.Post;
+import com.jyhun.board.domain.post.repository.PostRepository;
 import com.jyhun.board.global.exception.CustomException;
 import com.jyhun.board.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,13 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDTO> findComments() {
+    public List<CommentResponseDTO> findComments(Long postId) {
         log.info("findComments 메서드 호출");
 
-        List<Comment> commentList = commentRepository.findAll();
+        List<Comment> commentList = commentRepository.findAllByPostId(postId);
         List<CommentResponseDTO> commentResponseDTOList = new ArrayList<>();
         for (Comment comment : commentList) {
             CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
@@ -36,10 +39,16 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDTO addComment(CommentRequestDTO commentRequestDTO) {
+    public CommentResponseDTO addComment(Long postId, CommentRequestDTO commentRequestDTO) {
         log.info("addComment 메서드 호출");
 
+        Post post = postRepository.findById(postId).orElseThrow(() -> {
+            log.error("ID가 {}인 게시글을 찾을 수 없습니다.", postId);
+            return new CustomException(ErrorCode.POST_NOT_FOUND);
+        });
+
         Comment comment = commentRequestDTO.toEntity();
+        comment.setPost(post);
         Comment savedComment = commentRepository.save(comment);
 
         log.info("댓글 추가 완료, 댓글 ID: {}", savedComment.getId());
