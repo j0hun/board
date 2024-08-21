@@ -25,10 +25,13 @@ public class PostResponseDTO {
 
     public static PostResponseDTO toDTO(Post post) {
         List<Comment> commentList = post.getCommentList();
-        List<CommentResponseDTO> commentResponseDTOList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
-            commentResponseDTOList.add(commentResponseDTO);
+        List<CommentResponseDTO> commentResponseDTOList = null;
+        if (commentList != null) {
+            commentResponseDTOList = new ArrayList<>();
+            for (Comment comment : commentList) {
+                CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
+                commentResponseDTOList.add(commentResponseDTO);
+            }
         }
         PostResponseDTO postResponseDTO = new PostResponseDTO(
                 post.getId(),
