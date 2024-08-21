@@ -31,11 +31,18 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return null;
     }
 
+    private BooleanExpression boardIdEq(Long boardId) {
+        return boardId != null ? post.board.id.eq(boardId) : null;
+    }
+
     @Override
-    public Page<Post> findPosts(PostSearchDTO postSearchDTO, Pageable pageable) {
+    public Page<Post> findPosts(Long boardId, PostSearchDTO postSearchDTO, Pageable pageable) {
         List<Post> postList = queryFactory
                 .selectFrom(post)
-                .where(search(postSearchDTO.getSearchKey(), postSearchDTO.getSearchValue()))
+                .where(
+                        boardIdEq(boardId),
+                        search(postSearchDTO.getSearchKey(), postSearchDTO.getSearchValue())
+                )
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -44,7 +51,9 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         Long totalCount = queryFactory
                 .select(post.count())
                 .from(post)
-                .where(search(postSearchDTO.getSearchKey(), postSearchDTO.getSearchValue()))
+                .where(
+                        boardIdEq(boardId),
+                        search(postSearchDTO.getSearchKey(), postSearchDTO.getSearchValue()))
                 .fetchOne();
 
         return new PageImpl<>(postList, pageable, totalCount);

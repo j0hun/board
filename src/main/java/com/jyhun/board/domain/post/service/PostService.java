@@ -1,5 +1,7 @@
 package com.jyhun.board.domain.post.service;
 
+import com.jyhun.board.domain.board.entity.Board;
+import com.jyhun.board.domain.board.repository.BoardRepository;
 import com.jyhun.board.domain.post.dto.PostRequestDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
 import com.jyhun.board.domain.post.dto.PostSearchDTO;
@@ -24,11 +26,12 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final BoardRepository boardRepository;
 
     @Transactional(readOnly = true)
-    public Page<PostResponseDTO> findPosts(PostSearchDTO postSearchDTO, Pageable pageable) {
+    public Page<PostResponseDTO> findPosts(Long boardId,PostSearchDTO postSearchDTO, Pageable pageable) {
         log.info("findPosts 메서드 호출");
-        Page<Post> postPage = postRepository.findPosts(postSearchDTO, pageable);
+        Page<Post> postPage = postRepository.findPosts(boardId, postSearchDTO, pageable);
         List<PostResponseDTO> postResponseDTOList = new ArrayList<>();
         for (Post post : postPage) {
             PostResponseDTO postResponseDTO = PostResponseDTO.toDTO(post);
@@ -54,12 +57,17 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO addPost(PostRequestDTO postRequestDTO) {
+    public PostResponseDTO addPost(Long boardId, PostRequestDTO postRequestDTO) {
         log.info("addPost 메서드 호출");
 
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> {
+                    log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
+                    return new CustomException(ErrorCode.BOARD_NOT_FOUND);
+                });
         Post post = postRequestDTO.toEntity();
+        post.setBoard(board);
         Post savedPost = postRepository.save(post);
-
         log.info("게시글 추가 완료, 게시글 ID: {}", savedPost.getId());
         return PostResponseDTO.toDTO(savedPost);
     }

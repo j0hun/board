@@ -27,14 +27,6 @@ public class BoardController {
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
 
-    @GetMapping("/{boardId}")
-    public ResponseEntity<BoardResponseDTO> getBoardById(@PathVariable Long boardId) {
-        log.info("ID {}의 게시판 조회 요청", boardId);
-        BoardResponseDTO board = boardService.findBoardById(boardId);
-        log.info("ID {}의 게시판 조회 성공", boardId);
-        return new ResponseEntity<>(board, HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<BoardResponseDTO> postBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
         log.info("게시판 생성 요청, 생성 데이터: {}", boardRequestDTO);

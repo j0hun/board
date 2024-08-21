@@ -52,4 +52,7 @@ public class Post {
         this.likeCount += 1;
     }
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }
