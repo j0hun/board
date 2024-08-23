@@ -21,7 +21,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     # Hibernate가 사용하는 MySQL 데이터베이스의 방언
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       # Hibernate의 DDL 생성 전략 설정
 
 logging:
