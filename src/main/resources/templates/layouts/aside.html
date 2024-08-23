@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<body>
 <th:block th:fragment="aside">
-    <aside class="side-container">
+    <aside class="aside-container">
         <div class="vertical-menu">
             <h2>게시판</h2>
-            <a href="/board/list"><i class="fas fa-arrow-alt-circle-right"></i><span>&nbsp; 게시판</span></a>
+            <div class="board-list">
+                <!-- boards 데이터가 이곳에 반복적으로 추가됩니다 -->
+                <a th:each="board : ${boards}" th:href="@{/board/{id}(id=${board.id})}" th:text="${board.name}" class="board-item">카테고리 이름</a>
+            </div>
         </div>
     </aside>
 </th:block>
+</body>
 </html>
