@@ -15,11 +15,8 @@
     <header th:replace="~{/layouts/header :: header}"></header>
     <div class="main-container">
         <aside th:replace="~{/layouts/aside :: aside}"></aside>
-        <content>
-            <th:block layout:fragment="content"></th:block>
-        </content>
+        <content><th:block layout:fragment="content"></th:block></content>
     </div>
-    <footer th:replace="~{/layouts/footer :: footer}"></footer>
 </div>
 </body>
 </html>

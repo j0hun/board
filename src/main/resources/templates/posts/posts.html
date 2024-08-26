@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="container my-3">
+        <form th:action="@{/posts/{postId}(postId=${postId})}" method="get">
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th>제목</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="post : ${posts}">
+                    <td><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:with="start=${(posts.number/maxPage)*maxPage + 1}, end=(${(posts.totalPages == 0) ? 1 : (start + (maxPage - 1) < posts.totalPages ? start + (maxPage - 1) : posts.totalPages)})">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${posts.first}?'disabled'">
+                        <a th:onclick="'javascript:page(' + ${posts.number - 1} + ')'" aria-label="Previous"
+                           class="page-link">
+                            <span aria-hidden="true">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start,end)}"
+                        th:classappend="${posts.number eq page-1}?'active':''">
+                        <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                    </li>
+                    <li class="page-item" th:classappend="${posts.last}?'disabled'">
+                        <a th:onclick="'javascript:page(' + ${posts.number + 1} + ')'" aria-label="Next"
+                           class="page-link">
+                            <span aria-hidden="true">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 검색 필드 및 버튼 -->
+            <div class="form-inline justify-content-center mt-4" th:object="${postSearchDTO}">
+                <div class="input-group">
+                    <select th:field="*{searchKey}" class="form-control form-control-sm" style="max-width: 120px;">
+                        <option value="title">제목</option>
+                        <option value="createdBy">작성자</option>
+                    </select>
+                    <input th:field="*{searchValue}" class="form-control form-control-sm" placeholder="검색어를 입력해주세요." style="max-width: 200px;">
+                    <div class="input-group-append">
+                        <button id="searchBtn" type="submit" class="btn btn-primary btn-sm">검색</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
