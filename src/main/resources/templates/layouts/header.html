@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
-  <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-    <a class="navbar-brand" href="/">Home</a>
-  </nav>
+    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <a class="navbar-brand" href="/">Home</a>
+        <a th:each="board : ${boards}" th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.name}"
+           class="board-item">카테고리 이름</a>
+    </nav>
 </div>
 </html>
