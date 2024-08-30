@@ -2,6 +2,8 @@ package com.jyhun.board.domain.post.service;
 
 import com.jyhun.board.domain.board.entity.Board;
 import com.jyhun.board.domain.board.repository.BoardRepository;
+import com.jyhun.board.domain.member.entity.Member;
+import com.jyhun.board.domain.member.repository.MemberRepository;
 import com.jyhun.board.domain.post.dto.PostRequestDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
 import com.jyhun.board.domain.post.dto.PostSearchDTO;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PostService {
+    private final MemberRepository memberRepository;
 
     private final PostRepository postRepository;
     private final BoardRepository boardRepository;
@@ -57,7 +60,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO addPost(Long boardId, PostRequestDTO postRequestDTO) {
+    public PostResponseDTO addPost(Long boardId, PostRequestDTO postRequestDTO,String email) {
         log.info("addPost 메서드 호출");
 
         Board board = boardRepository.findById(boardId)
@@ -65,8 +68,16 @@ public class PostService {
                     log.error("ID가 {}인 게시판을 찾을 수 없습니다.", boardId);
                     return new CustomException(ErrorCode.BOARD_NOT_FOUND);
                 });
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("이메일이 {}인 게시판을 찾을 수 없습니다.", email);
+                    return new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+                });
+
         Post post = postRequestDTO.toEntity();
         post.setBoard(board);
+        post.setMember(member);
         Post savedPost = postRepository.save(post);
         log.info("게시글 추가 완료, 게시글 ID: {}", savedPost.getId());
         return PostResponseDTO.toDTO(savedPost);

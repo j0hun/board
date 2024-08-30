@@ -21,6 +21,7 @@ public class PostResponseDTO {
     private Long viewCount;
     private Long likeCount;
     private Long boardId;
+    private String author;
     private List<CommentResponseDTO> commentResponseDTOList;
 
     public static PostResponseDTO toDTO(Post post) {
@@ -37,6 +38,7 @@ public class PostResponseDTO {
                 post.getViewCount(),
                 post.getLikeCount(),
                 post.getBoard().getId(),
+                post.getMember().getName(),
                 commentResponseDTOList
         );
         return postResponseDTO;

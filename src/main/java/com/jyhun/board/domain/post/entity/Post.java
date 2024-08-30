@@ -2,6 +2,7 @@ package com.jyhun.board.domain.post.entity;
 
 import com.jyhun.board.domain.board.entity.Board;
 import com.jyhun.board.domain.comment.entity.Comment;
+import com.jyhun.board.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,6 +33,10 @@ public class Post {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
@@ -61,5 +66,8 @@ public class Post {
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

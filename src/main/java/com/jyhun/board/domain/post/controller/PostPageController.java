@@ -51,4 +51,10 @@ public class PostPageController {
         model.addAttribute("post",post);
         return "posts/post";
     }
+
+    @RequestMapping("/boards/{boardId}/createPost")
+    public String createPostPage(Model model, @PathVariable Long boardId) {
+        model.addAttribute("boardId", boardId);
+        return "posts/createPost";
+    }
 }

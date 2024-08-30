@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +21,9 @@ public class PostApiController {
     @PostMapping("/boards/{boardId}/posts")
     public ResponseEntity<PostResponseDTO> postPost(@PathVariable Long boardId,
                                                     @RequestBody PostRequestDTO postRequestDTO) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("게시글 생성 요청, 생성 데이터: {}", postRequestDTO);
-        PostResponseDTO postResponseDTO = postService.addPost(boardId,postRequestDTO);
+        PostResponseDTO postResponseDTO = postService.addPost(boardId,postRequestDTO,email);
         return new ResponseEntity<>(postResponseDTO, HttpStatus.CREATED);
     }
 

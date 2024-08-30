@@ -10,11 +10,13 @@
                 <thead class="table-dark">
                 <tr>
                     <th>제목</th>
+                    <th>작성자</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="post : ${posts}">
                     <td><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a></td>
+                    <td th:text="${post.author}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -45,11 +47,16 @@
                         <option value="title">제목</option>
                         <option value="createdBy">작성자</option>
                     </select>
-                    <input th:field="*{searchValue}" class="form-control form-control-sm" placeholder="검색어를 입력해주세요." style="max-width: 200px;">
+                    <input th:field="*{searchValue}" class="form-control form-control-sm" placeholder="검색어를 입력해주세요."
+                           style="max-width: 200px;">
                     <div class="input-group-append">
                         <button id="searchBtn" type="submit" class="btn btn-primary btn-sm">검색</button>
                     </div>
                 </div>
+            </div>
+            <!-- 글쓰기 버튼 -->
+            <div>
+                <a class="btn btn-primary mb-3" th:href="@{/boards/{boardId}/createPost(boardId=${boardId})}">글쓰기</a>
             </div>
         </form>
     </div>

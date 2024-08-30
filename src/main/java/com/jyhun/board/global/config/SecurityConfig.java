@@ -15,6 +15,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf->csrf.disable());
         http.formLogin((formLogin) -> formLogin
                         .usernameParameter("email") // 로그인 시 사용할 파라미터로 email 사용
                         .failureUrl("/members/login/error") // 로그인 실패시 이동할 페이지
