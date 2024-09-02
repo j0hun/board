@@ -4,6 +4,8 @@ import com.jyhun.board.domain.comment.dto.CommentRequestDTO;
 import com.jyhun.board.domain.comment.dto.CommentResponseDTO;
 import com.jyhun.board.domain.comment.entity.Comment;
 import com.jyhun.board.domain.comment.repository.CommentRepository;
+import com.jyhun.board.domain.member.entity.Member;
+import com.jyhun.board.domain.member.repository.MemberRepository;
 import com.jyhun.board.domain.post.entity.Post;
 import com.jyhun.board.domain.post.repository.PostRepository;
 import com.jyhun.board.global.exception.CustomException;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CommentService {
+    private final MemberRepository memberRepository;
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
@@ -39,7 +42,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDTO addComment(Long postId, CommentRequestDTO commentRequestDTO) {
+    public CommentResponseDTO addComment(Long postId, CommentRequestDTO commentRequestDTO,String email) {
         log.info("addComment 메서드 호출");
 
         Post post = postRepository.findById(postId).orElseThrow(() -> {
@@ -47,8 +50,14 @@ public class CommentService {
             return new CustomException(ErrorCode.POST_NOT_FOUND);
         });
 
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("이메일이 {}인 회원을 찾을 수 없습니다.", email);
+            return new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        });
+
         Comment comment = commentRequestDTO.toEntity();
         comment.setPost(post);
+        comment.setMember(member);
         Comment savedComment = commentRepository.save(comment);
 
         log.info("댓글 추가 완료, 댓글 ID: {}", savedComment.getId());

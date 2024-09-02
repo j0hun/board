@@ -1,5 +1,6 @@
 package com.jyhun.board.domain.comment.entity;
 
+import com.jyhun.board.domain.member.entity.Member;
 import com.jyhun.board.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,9 +19,13 @@ public class Comment {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
     public Comment(String content) {
@@ -38,4 +43,9 @@ public class Comment {
             post.getCommentList().add(this);
         }
     }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
 }

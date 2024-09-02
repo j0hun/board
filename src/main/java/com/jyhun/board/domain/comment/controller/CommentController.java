@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentResponseDTO> postComment(@PathVariable Long postId,
                                                           @RequestBody CommentRequestDTO commentRequestDTO) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("댓글 생성 요청, 생성 데이터: {}", commentRequestDTO);
-        CommentResponseDTO commentResponseDTO = commentService.addComment(postId,commentRequestDTO);
+        CommentResponseDTO commentResponseDTO = commentService.addComment(postId,commentRequestDTO,email);
         return new ResponseEntity<>(commentResponseDTO, HttpStatus.CREATED);
     }
 
