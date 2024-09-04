@@ -5,7 +5,7 @@
 
 <div layout:fragment="content">
     <div class="container my-3">
-        <form th:action="@{/posts/{postId}(postId=${postId})}" method="get">
+        <form>
             <table class="table">
                 <thead class="table-dark">
                 <tr>
@@ -20,26 +20,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div th:with="start=${(posts.number/maxPage)*maxPage + 1}, end=(${(posts.totalPages == 0) ? 1 : (start + (maxPage - 1) < posts.totalPages ? start + (maxPage - 1) : posts.totalPages)})">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" th:classappend="${posts.first}?'disabled'">
-                        <a th:onclick="'javascript:page(' + ${posts.number - 1} + ')'" aria-label="Previous"
-                           class="page-link">
-                            <span aria-hidden="true">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item" th:each="page: ${#numbers.sequence(start,end)}"
-                        th:classappend="${posts.number eq page-1}?'active':''">
-                        <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
-                    </li>
-                    <li class="page-item" th:classappend="${posts.last}?'disabled'">
-                        <a th:onclick="'javascript:page(' + ${posts.number + 1} + ')'" aria-label="Next"
-                           class="page-link">
-                            <span aria-hidden="true">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
             <!-- 검색 필드 및 버튼 -->
             <div class="form-inline justify-content-center mt-4" th:object="${postSearchDTO}">
                 <div class="input-group">
@@ -54,10 +35,70 @@
                     </div>
                 </div>
             </div>
+
+            <div th:with="start=${(posts.number/maxPage)*maxPage + 1}, end=(${(posts.totalPages == 0) ? 1 : (start + (maxPage - 1) < posts.totalPages ? start + (maxPage - 1) : posts.totalPages)})">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${posts.first}?'disabled'">
+                        <a th:onclick="'javascript:page(' + ${posts.number - 1} + ')'" aria-label="Previous" class="page-link">
+                            <span aria-hidden="true">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start,end)}"
+                        th:classappend="${posts.number eq page - 1}?'active':''">
+                        <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                    </li>
+                    <li class="page-item" th:classappend="${posts.last}?'disabled'">
+                        <a th:onclick="'javascript:page(' + ${posts.number + 1} + ')'" aria-label="Next"
+                           class="page-link">
+                            <span aria-hidden="true">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             <!-- 글쓰기 버튼 -->
             <div>
-                <a class="btn btn-primary mb-3" th:href="@{/boards/{boardId}/createPost(boardId=${boardId})}">글쓰기</a>
+                <a class="btn btn-primary mb-3"
+                   th:href="@{/boards/{boardId}/createPost(boardId=${boardId})}">글쓰기</a>
             </div>
         </form>
     </div>
+
+    <script>
+        // posts 객체를 JSON으로 변환하여 JavaScript 변수에 할당
+        var posts = /*[[${posts}]]*/ {};
+
+        // 페이지 로드 후 초기화
+        $(document).ready(function () {
+            console.log(posts);
+        });
+
+    </script>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            // posts 객체를 JSON으로 변환하여 JavaScript 변수에 할당
+            var posts = /*[[${posts}]]*/ {};
+
+            // 페이지 로드 후 초기화
+            $(document).ready(function () {
+                console.log(posts);
+            });
+            const boardId = /*[[${boardId}]]*/ "";
+
+            $(document).ready(function () {
+                $("#searchBtn").on("click", function (e) {
+                    e.preventDefault();
+                    page(0);
+                });
+            });
+
+            function page(page) {
+                location.href = "/boards/" + boardId + "?page=" + page;
+            }
+        </script>
+    </th:block>
+
 </div>
+
+

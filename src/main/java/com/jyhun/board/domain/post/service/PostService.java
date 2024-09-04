@@ -14,13 +14,9 @@ import com.jyhun.board.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,13 +31,7 @@ public class PostService {
     public Page<PostResponseDTO> findPosts(Long boardId,PostSearchDTO postSearchDTO, Pageable pageable) {
         log.info("findPosts 메서드 호출");
         Page<Post> postPage = postRepository.findPosts(boardId, postSearchDTO, pageable);
-        List<PostResponseDTO> postResponseDTOList = new ArrayList<>();
-        for (Post post : postPage) {
-            PostResponseDTO postResponseDTO = PostResponseDTO.toDTO(post);
-            postResponseDTOList.add(postResponseDTO);
-        }
-        log.info("게시글 목록 페이징 조회 성공");
-        return new PageImpl<>(postResponseDTOList, pageable, postResponseDTOList.size());
+        return postPage.map(post -> PostResponseDTO.toDTO(post));
     }
 
     @Transactional(readOnly = true)
