@@ -19,15 +19,12 @@ import java.io.IOException;
 @Slf4j
 public class JwtFilter extends GenericFilterBean {
 
-    private static final String BEARER_PREFIX = "Bearer ";
-    private static final String header = "Authorization";
-
     private final JwtProvider jwtProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String token = resolveToken(httpServletRequest);
+        String token = jwtProvider.resolveToken(httpServletRequest);
         if(StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
             Authentication authentication = jwtProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -36,12 +33,4 @@ public class JwtFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest,servletResponse);
     }
 
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(header);
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
 }
