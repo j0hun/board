@@ -1,5 +1,6 @@
 package com.jyhun.board.domain.post.controller;
 
+import com.jyhun.board.domain.post.dto.PostListDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
 import com.jyhun.board.domain.post.dto.PostSearchDTO;
 import com.jyhun.board.domain.post.service.PostService;
@@ -30,7 +31,7 @@ public class PostPageController {
         PostSearchDTO postSearchDTO = new PostSearchDTO(searchKey, searchValue);
         log.info("게시글 목록 페이징 조회, 검색 조건: {}, 페이지: {}", postSearchDTO, pageable);
 
-        Page<PostResponseDTO> posts = postService.findPosts(boardId, postSearchDTO, pageable);
+        Page<PostListDTO> posts = postService.findPosts(boardId, postSearchDTO, pageable);
 
         model.addAttribute("posts", posts);
         model.addAttribute("boardId", boardId);

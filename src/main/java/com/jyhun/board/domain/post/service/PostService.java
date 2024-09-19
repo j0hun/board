@@ -4,6 +4,7 @@ import com.jyhun.board.domain.board.entity.Board;
 import com.jyhun.board.domain.board.repository.BoardRepository;
 import com.jyhun.board.domain.member.entity.Member;
 import com.jyhun.board.domain.member.repository.MemberRepository;
+import com.jyhun.board.domain.post.dto.PostListDTO;
 import com.jyhun.board.domain.post.dto.PostRequestDTO;
 import com.jyhun.board.domain.post.dto.PostResponseDTO;
 import com.jyhun.board.domain.post.dto.PostSearchDTO;
@@ -28,10 +29,10 @@ public class PostService {
     private final BoardRepository boardRepository;
 
     @Transactional(readOnly = true)
-    public Page<PostResponseDTO> findPosts(Long boardId,PostSearchDTO postSearchDTO, Pageable pageable) {
+    public Page<PostListDTO> findPosts(Long boardId,PostSearchDTO postSearchDTO, Pageable pageable) {
         log.info("findPosts 메서드 호출");
         Page<Post> postPage = postRepository.findPosts(boardId, postSearchDTO, pageable);
-        return postPage.map(post -> PostResponseDTO.toDTO(post));
+        return postPage.map(post -> PostListDTO.toDTO(post));
     }
 
     @Transactional(readOnly = true)
